@@ -1,7 +1,6 @@
 # AWS AI Practitioner — Complete Cheat Sheet
 ### All 5 Domains | Daily Revision Guide
 ---
-
 ## EXAM OVERVIEW
 
 | Domain | Weight |
