@@ -100,6 +100,7 @@ print(people)     # Only 2 unique people, since p1 == p2
 ## 2. List and Tuple Differences
 
 | Feature     | List              | Tuple              |
+|-------------|-------------------|--------------------|
 | Mutable     | ✅ Yes            | ❌ No              |
 | Syntax      | `[item1, item2]`  | `(item1, item2)`   |
 | Performance | Slightly slower   | Faster (read-only) |
@@ -262,6 +263,7 @@ numbers.discard(10)   # Safe remove (no error if not present)
 ### Dictionary vs Set Comparison
 
 | Feature    | Dictionary (`dict`)         | Set (`set`)               |
+|------------|-----------------------------|---------------------------|
 | Stores     | Key-value pairs             | Unique values only        |
 | Indexing   | By key                      | Not supported (unordered) |
 | Mutable    | ✅ Yes                      | ✅ Yes                    |
@@ -289,15 +291,17 @@ new_list = [expression for item in iterable if condition]
 
 ### Benefits
 
-| Feature         | Benefit                                |
-| Shorter Code    | Reduces multiple lines into one        |
-| Faster          | Usually faster than loops              |
-| Readability     | Cleaner and more Pythonic              |
-| Functional Style| Combines loop + condition in one place |
+| Feature          | Benefit                                |
+|------------------|----------------------------------------|
+| Shorter Code     | Reduces multiple lines into one        |
+| Faster           | Usually faster than loops              |
+| Readability      | Cleaner and more Pythonic              |
+| Functional Style | Combines loop + condition in one place |
 
 ### Comprehension Types
 
 | Type               | Syntax Example                         | Result Type     |
+|--------------------|----------------------------------------|-----------------|
 | List comprehension | `[x*2 for x in range(5)]`              | List            |
 | Dict comprehension | `{x: x**2 for x in range(5)}`          | Dictionary      |
 | With condition     | `[x for x in range(10) if x % 2 == 0]` | List (filtered) |
@@ -570,6 +574,7 @@ for i in count_up_to(5):
 ### Iterator vs Generator Comparison
 
 | Feature     | Iterator                          | Generator                    |
+|-------------|-----------------------------------|------------------------------|
 | Definition  | Class with `__iter__`, `__next__` | Function with `yield`        |
 | State saved | Manually handled                  | Automatically by Python      |
 | Syntax      | Verbose                           | Compact and Pythonic         |
@@ -969,12 +974,13 @@ print(MathUtils.is_even(10)) # True
 
 ### Comparison Table
 
-| Feature            | Defined As                    | First Argument | Can Access…               |
-Instance method	def foo(self, …):	self	Instance + class data
-Class method	@classmethod\ndef foo(cls…)	cls	Class + (other passed)
-Static method	@staticmethod\ndef foo(…)	—	Only what you pass in
-| Instance attribute | `self.x = …`                  | N/A            | Unique to each object     |
-| Class attribute    | `Class.x = …`                 | N/A            | Shared across all objects |
+| Feature            | Defined As                      | First Argument | Can Access…               |
+|--------------------|---------------------------------|----------------|---------------------------|
+| Instance method    | `def foo(self, …):`             | `self`         | Instance + class data     |
+| Class method       | `@classmethod\ndef foo(cls…)`   | `cls`          | Class + (other passed)    |
+| Static method      | `@staticmethod\ndef foo(…)`     | —              | Only what you pass in     |
+| Instance attribute | `self.x = …`                    | N/A            | Unique to each object     |
+| Class attribute    | `Class.x = …`                   | N/A            | Shared across all objects |
 
 ---
 
@@ -1043,23 +1049,26 @@ All tasks completed!
 
 ### Common Threading Methods
 
-| Method / Attribute             | Description                |
-Thread(target=func, args=())	Create a new thread
-start()	Start the thread
-join()	Wait for thread to finish
-current_thread()	Get current thread object
-| `name`                         | Thread name                |
-| `is_alive()`                   | Check if thread is running |
+| Method / Attribute               | Description                |
+|----------------------------------|----------------------------|
+| `Thread(target=func, args=())`   | Create a new thread        |
+| `start()`                        | Start the thread           |
+| `join()`                         | Wait for thread to finish  |
+| `current_thread()`               | Get current thread object  |
+| `name`                           | Thread name                |
+| `is_alive()`                     | Check if thread is running |
 
 ### When to Use Threading
 
 | Task Type                               | Recommended                            |
+|-----------------------------------------|----------------------------------------|
 | I/O-bound (API calls, DB queries, etc.) | ✅ `threading` / `ThreadPoolExecutor`  |
 | CPU-bound (math, data processing, ML)   | 🚫 `threading` — use `multiprocessing` |
 
 ### GIL Effect Summary
 
 | Scenario               | GIL Effect               | Result                     |
+|------------------------|--------------------------|----------------------------|
 | I/O-bound tasks        | GIL released during wait | Threads run concurrently ✅ |
 | CPU-bound tasks        | GIL always held          | No parallelism ❌          |
 | `sleep()`, network, DB | OS handles waiting       | Overlap execution ✅       |
@@ -1142,8 +1151,11 @@ To handle such circular references, Python has a garbage collector in the gc mod
 ### Summary Table
 
 | Concept                | Description                                                                         |
+|------------------------|-------------------------------------------------------------------------------------|
 | **Reference Counting** | Counts how many references exist for each object. Frees immediately when count = 0. |
 | **Garbage Collector**  | Handles circular references that reference counting can't free.                     |
+| **PyMalloc**           | Python's custom memory allocator for small objects (faster than OS allocation).     |
+| **`gc.collect()`**     | Manually triggers garbage collection.                                               |
 | **PyMalloc**           | Python's custom memory allocator for small objects (faster than OS allocation).     |
 | **`gc.collect()`**     | Manually triggers garbage collection.                                               |
 
@@ -1199,6 +1211,7 @@ Error: Age must be at least 18!
 ### Summary Table
 
 | Concept                          | Description                    |
+|----------------------------------|--------------------------------|
 | `class MyError(Exception): pass` | Define custom exception        |
 | `raise MyError("message")`       | Raise it                       |
 | `try: ... except MyError:`       | Handle it                      |
@@ -1235,6 +1248,7 @@ DATABASES = {
 ### Database Drivers
 
 | Database   | Driver Installation      | Engine                            |
+|------------|--------------------------|-----------------------------------|
 | Oracle SQL | `pip install cx-Oracle`  | `'django.db.backends.oracle'`     |
 | PostgreSQL | `pip install psycopg2`   | `'django.db.backends.postgresql'` |
 
