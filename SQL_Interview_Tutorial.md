@@ -15,7 +15,6 @@
 12. [Common Interview Questions](#common-interview-questions)
 
 ---
-
 ## SQL Basics
 
 ### What is SQL?
