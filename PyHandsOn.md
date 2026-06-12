@@ -21,7 +21,7 @@
 18. [Zero-Based Indexing](#18-zero-based-indexing)
 19. [Database Configuration](#19-database-configuration)
 20. [Docker](#20-docker)
-
+21. [Context Manager](#21-Context-Manager)
 ---
 
 ## 1. Getters and Setters
@@ -428,6 +428,7 @@ After
 #### Decorator with Arguments
 
 ```python
+def mydec(func):
     def wrapper(*args):
         print("before")
         func(*args)
@@ -439,11 +440,18 @@ def hello(s, s2):
     print(f"hello {s} and {s2}")
     
 hello("sanjay", "kumar")
+
+Output:
+before
+hello sanjay and kumar
+after
+
 ```
 
 #### Practical Example: Logging Decorator
 
 ```python
+def log(func):
     def wrapper(n):
         print(f"Calling {func.__name__} with n = {n}")
         result = func(n)
@@ -510,6 +518,7 @@ print(next(i))  # 4
 #### Custom Iterator Example
 
 ```python
+class Numbers:
     def __init__(self):
         self.num = 1
     
@@ -534,6 +543,7 @@ for i in n:
 A generator is a simpler way to create an iterator using a function with `yield`.
 
 ```python
+def fib(n):
     a, b = 0, 1
     for i in range(n):
         yield a
@@ -559,6 +569,7 @@ for i in count_up_to(5):
 #### Regular Function Equivalent
 
 ```python
+def count_up_to_reg(n):
     result = []
     num = 1
     while num <= n:
@@ -680,6 +691,7 @@ print(sorted_students)
 ### Example
 
 ```python
+def profile(title, *args, **kwargs):
     print("Title:", title)
     print("Positional:", args)
     print("Keyword:", kwargs)
@@ -753,7 +765,7 @@ To create an abstract class we have to import `from abc import ABC, abstractmeth
 ### Example
 
 ```python
-
+from abc import ABC, abstractmethod
 class Animal(ABC):
     @abstractmethod
     def make_sound(self):
@@ -788,6 +800,7 @@ Encapsulation is the practice of wrapping data (attributes) and code (methods) t
 ### Example
 
 ```python
+class Person:
     def __init__(self, name, age):
         self.__name = name  # private attribute
         self.__age = age    # private attribute
@@ -833,6 +846,7 @@ Polymorphism means "many forms." In Python, it allows the same method or operato
 Method overriding occurs when a subclass provides a specific implementation of a method that is already defined in its superclass.
 
 ```python
+class Animal:
     def speak(self):
         print("Animal speaks")
 
@@ -853,6 +867,7 @@ Method overloading means having multiple methods in the same class with the same
 Instead, Python handles it using default arguments or `*args`.
 
 ```python
+class Calculator:
     def add(self, *args):
         return sum(args)
 
@@ -900,6 +915,50 @@ Dog barks
 | **Hierarchical** | One parent, many children       | `class Cat(Animal), Dog(Animal)` |
 | **Hybrid**       | Combination of any of the above | Complex structures               |
 
+### What is MRO?
+
+MRO (Method Resolution Order) is the order in which Python searches for methods and attributes in an inheritance hierarchy. It is especially important in multiple inheritance to resolve ambiguity. Python uses the C3 Linearization Algorithm to compute the MRO, which can be viewed using:
+ClassName.mro()
+```python
+class A:
+    def show(self):
+        print("A")
+
+class B(A):
+    def show(self):
+        print("B")
+
+class C(A):
+    def show(self):
+        print("C")
+
+class D(B, C):
+    pass
+
+obj = D()
+obj.show()
+```
+Output:
+```
+B
+
+Why?
+
+Python follows the MRO:
+
+print(D.mro())
+
+Output:
+
+[D, B, C, A, object]
+
+Search order:
+
+D → B → C → A → object
+
+Since B has show(), Python stops there.
+```
+
 ---
 
 ## 14. Instance, Static, Class Methods and Attributes
@@ -911,6 +970,7 @@ Always take `self` as their first parameter.
 Can read and write instance attributes, which are stored on `self`.
 
 ```python
+class Circle:
     def __init__(self, radius):          # constructor
         self.radius = radius             # instance attribute
 
@@ -931,6 +991,7 @@ Defined with the `@classmethod` decorator and take `cls` as their first paramete
 Can read/write class attributes—shared by all instances.
 
 ```python
+class Circle:
     pi = 3.1416                    # class attribute
 
     def __init__(self, radius):
@@ -960,6 +1021,7 @@ Defined with `@staticmethod`.
 Don't take `self` or `cls`—they cannot access instance or class data unless explicitly passed.
 
 ```python
+class MathUtils:
     @staticmethod
     def add(a, b):
         return a + b
@@ -1120,6 +1182,7 @@ Reference counting fails when two objects reference each other.
 **Example:**
 
 ```python
+class Node:
     def __init__(self):
         self.ref = None
 
@@ -1184,6 +1247,7 @@ You create custom exceptions when:
 ### Example
 
 ```python
+class InvalidAgeError(Exception):
     """Raised when age is below the allowed limit."""
     pass
 
@@ -1217,6 +1281,27 @@ Error: Age must be at least 18!
 | `try: ... except MyError:`       | Handle it                      |
 | `__init__`, `__str__`            | Customize behavior             |
 | Inherit hierarchy                | For organized error management |
+
+### else block in Exception Handling
+
+The else block executes only if no exception occurs.
+```python
+try:
+    num = int("123")
+except ValueError:
+    print("Invalid number")
+else:
+    print("No exception occurred")
+finally:
+    print("Always executes")
+
+Output:
+
+No exception occurred
+Always executes
+
+If an exception occurs, else is skipped.
+```
 
 ---
 
@@ -1268,6 +1353,135 @@ Docker is a platform that allows developers to package applications and their de
 > **Docker = "Build once, run anywhere"**
 
 It improves efficiency, reliability, and scalability in software development and deployment.
+
+---
+
+## 21. Context Manager
+
+A context manager is a Python construct that manages resource acquisition and cleanup automatically using the with statement. It ensures resources such as files, database connections, and locks are properly released even if exceptions occur. We can create a custom context manager either by implementing __enter__() and __exit__() methods in a class or by using the @contextmanager decorator from the contextlib module.
+
+The most common example is file handling:
+
+```python
+with open("test.txt", "r") as f:
+    data = f.read()
+```
+Here:
+
+Before entering the with block → file is opened.
+After leaving the with block (even if an exception occurs) → file is closed automatically.
+
+Without a context manager:
+```python
+f = open("test.txt", "r")
+try:
+    data = f.read()
+finally:
+    f.close()
+```
+The with statement makes this cleaner and safer.
+
+### Why do we need Context Managers?
+
+They help manage resources such as:
+
+Database connections
+Files
+Network sockets
+Locks/Mutexes
+Transactions
+
+and guarantee cleanup even when exceptions occur.
+
+A context manager implements two special methods:
+```python
+__enter__()
+__exit__()
+
+Flow:
+
+with MyContext() as obj:
+    # code block
+
+Execution order:
+
+1. __enter__()
+2. code inside with block
+3. __exit__()
+```
+
+### Custom Context Manager Using a Class
+
+```python
+class MyContextManager:
+
+    def __enter__(self):
+        print("Resource acquired")
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        print("Resource released")
+
+
+with MyContextManager():
+    print("Inside block")
+
+Output:
+
+Resource acquired
+Inside block
+Resource released
+```
+
+### Custom Context Manager Using contextlib
+
+Python provides the contextlib module.
+```python
+from contextlib import contextmanager
+
+@contextmanager
+def my_context():
+    print("Acquire resource")
+
+    try:
+        yield
+    finally:
+        print("Release resource")
+
+
+with my_context():
+    print("Inside block")
+
+Output:
+
+Acquire resource
+Inside block
+Release resource
+```
+
+The code before yield behaves like __enter__(), and the code after yield behaves like __exit__().
+
+### Real-world FastAPI Example
+
+The get_db() dependency is essentially a context manager:
+```python
+def get_db():
+    db = SessionLocal()
+
+    try:
+        yield db
+    finally:
+        db.close()
+```
+
+When a request arrives:
+
+1. Create DB session
+2. Yield session to endpoint
+3. Endpoint executes
+4. Session closes automatically
+
+This prevents database connection leaks.
 
 ---
 
