@@ -12,7 +12,6 @@
 9. [Advanced RAG Techniques](#advanced-rag-techniques)
 10. [Production Considerations](#production-considerations)
 11. [Common Interview Questions](#common-interview-questions)
-
 ---
 
 ## RAG Fundamentals
