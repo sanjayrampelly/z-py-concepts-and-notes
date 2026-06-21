@@ -1,6 +1,5 @@
 # AI Concepts - Complete Learning Path
 
-
 ## Table of Contents
 1. [Foundational AI Concepts](#foundational-ai-concepts)
 2. [Large Language Models (LLMs)](#large-language-models-llms)
