@@ -1,0 +1,462 @@
+***************************
+1. t=("apple", "orange", "banana") 
+
+# print(t[2]) 
+# t[0]="grapes" 
+
+print(t) 
+
+l=list(t) 
+l[2]="grapes" 
+
+t=tuple(l) 
+print(t)
+
+🧠 Key Difference
+❌ t[0] = "grapes"
+
+Trying to modify an element inside an immutable tuple
+→ not allowed
+
+✔️ t = tuple(l)
+
+Creating a new tuple and assigning it to variable t
+→ allowed
+
+Tuples are immutable, but variables pointing to tuples are not immutable.
+You can always make a new tuple and reassign the variable.
+
+***
+t = ("apple", {1: "a", 2: "b"})
+
+the second element is a dictionary, and dictionaries are mutable.
+
+However, your next line:
+
+t[1] = {3: "c"}
+
+will raise an error:
+
+TypeError: 'tuple' object does not support item assignment
+
+because tuples themselves are immutable. You cannot replace any element of a tuple after it is created.
+
+What you can do is modify the dictionary that is stored inside the tuple:
+
+t = ("apple", {1: "a", 2: "b"})
+
+t[1][3] = "c"      # modify the dictionary
+print(t)
+
+Output:
+
+('apple', {1: 'a', 2: 'b', 3: 'c'})
+
+This works because:
+
+The tuple's structure remains unchanged (it still has the same two elements).
+The dictionary object inside the tuple is mutable, so its contents can change.
+
+********************************************************************************************
+
+2. len of l=[2,3.9,4,5,]
+
+✅ Length of the list
+
+The list contains 4 elements:
+
+2
+
+3.9
+
+4
+
+5
+
+The trailing comma does not create an extra element.
+It just makes the list formatting easier and is totally valid in Python.
+
+✔️ Length:
+len(l)   # output -> 4
+
+
+So the answer is:
+
+⭐ Length = 4
+
+*******************************************************************
+
+3. s="AbCadbB"  output should be res = "ACBbadb"
+
+s="AbCadbB" 
+res="" 
+for i in s: 
+  if i.isupper(): 
+	res+=i 
+
+for i in s: 
+  if i.islower(): 
+	res+=i 
+
+print(res)
+
+
+✅ Single Loop Approach
+s = "AbCadbB"
+res_upper = ""
+res_lower = ""
+
+for ch in s:
+    if ch.isupper():
+        res_upper += ch
+    else:
+        res_lower += ch
+
+res = res_upper + res_lower
+print(res)
+
+
+
+✅ Version 2 — One pass + comprehension inside loop style
+
+To keep it closer to a single-loop logic:
+
+s = "AbCadbB"
+upper_chars = [c for c in s if c.isupper()]
+lower_chars = [c for c in s if c.islower()]
+res = "".join(upper_chars + lower_chars)
+print(res)
+
+
+*****************************************************************
+4.
+
+s1="hello"
+s2="door"
+res=""
+
+minl=min(len(s1),len(s2))
+
+for i in range(minl):
+    res+=s1[i]+s2[i]
+    
+for i in range(minl,len(s1)):
+    res+=s1[i] 
+    
+for j in range(minl,len(s2)):
+    res+=s2[j] 
+    
+print(res)
+
+
+s1 = "hello"
+s2 = "door"
+res = ""
+
+minl = min(len(s1), len(s2))
+
+for i in range(minl):
+    res += s1[i] + s2[i]
+
+res += s1[minl:] + s2[minl:]
+
+print(res)
+
+
+***************************************************************************
+5. 
+
+d1 = {"a": 1, "b": 2, "c": 3}
+d2 = {"b": 20, "c": 30, "d": 40}
+
+for k,v in d2.items():
+    if k in d1:
+        d1[k]+=v
+        
+    else:
+        d1[k]=v 
+        
+print(d1)
+
+
+
+
+merged = d1 | d2
+print(merged)
+
+
+
+sub Q ----- sort the key based on values in descending
+
+
+print(dict(sorted(d1.items(),key= lambda x:x[1],reverse=True)))
+
+
+d1 = {"a": 1, "b": 2, "c": "3"}
+d2 = {"b": 20, "c": 30, "d": 40}
+
+
+def merge(d1,d2):
+
+    for k,v in d2.items():
+        try:
+            if k in d1:
+                d1[k]+=v
+        
+            else:
+                d1[k]=v
+                
+        except TypeError as e:
+            print(e) 
+        
+    return(d1)
+    
+print(merge(d1,d2))
+
+
+⭐ Final Correct Rule
+✅ If you raise inside try → exception will be caught → program continues
+❌ If you raise inside except → new exception goes out → program stops (unless another try catches it)
+
+
+***********************************************************************************
+6. grp anagrams
+
+strs = ["eat","tea","tan","ate","nat","bat"]
+ 
+def grpanag(strs):
+    d={}
+    for i in strs:
+             
+        key=tuple(sorted(i))
+        if key in d:
+            d[key].append(i)
+        else:
+            d[key]=[i]
+             
+    return d 
+    
+d1=grpanag(strs)
+print(d1)
+
+l=[]
+for k,v in d1.items():
+    l.append(v)
+    
+print(l)
+
+********************************************************************
+
+7. s="I Love Python"  then res ="Python Love I"
+
+s="I Love Python"
+word=""
+words=[]
+
+for i in s:
+    if i==" ":
+        words.append(word)
+        word=""
+    else:
+        word+=i 
+    
+words.append(word)
+
+print(words)
+res=""
+for i in range(len(words)-1,-1,-1):
+    res+=words[i]+" "
+    
+print(res)
+
+
+
+s = "I Love Python"
+words = s.split()      # ['I', 'Love', 'Python']
+res = " ".join(words[::-1])
+print(res)
+
+
+**************************************************************
+8.  
+
+s="doollyy"  print unique 
+
+
+s="doollyy"
+res=""
+for i in s:
+    if s.count(i)==1:
+        res+=i 
+        
+print(res)
+        
+        
+d={}
+for i in s:
+    d[i]=d.get(i,0)+1 
+
+for i in s:
+    if d[i]==1:
+        print(i)
+
+
+*****************************************************************
+
+9.
+
+one number missing
+
+l=[1,2,4,6,8]
+res=[]
+for i in range(1,len(l)):
+    if l[i]-l[i-1]!=1:
+        res.append(l[i]-1)
+        
+print(res)
+
+
+
+multiple numbers missing
+
+l=[1,2,5,7,10]
+res=[]
+
+for i in range(1,len(l)):
+    if l[i]-l[i-1]!=1:
+        res.extend(range(l[i-1]+1,l[i]))
+        
+print(res)
+
+
+***********************************************************
+
+10.
+
+flatten a nested of lists
+
+
+recursive way 
+
+
+lst = [[1,2,3], [4,5], [6,7,8],10]
+
+def flatlist(lst):
+    res=[]
+    for i in lst:
+        if isinstance(i,list):
+            res.extend(flatlist(i))
+            
+        else:
+            res.append(i)
+            
+    return res
+    
+print(flatlist(lst))
+
+
+
+iterative way
+
+def flatlist_iter(lst):
+    res = []
+    stack = lst[::-1]  # reverse to process left-to-right using pop
+
+    while stack:
+        item = stack.pop()
+        if isinstance(item, list):
+            stack.extend(item[::-1])  # reverse sublist before extending
+        else:
+            res.append(item)
+    
+    return res
+
+# Example
+lst = [1, [2, [3, 4], 5], [6, 7], 8]
+print(flatlist_iter(lst))
+********************************************************
+
+arr = [2, 4, 6, -3, -1, 0, 1, -2]
+target = 2
+seen = set()  # value -> index
+res = []
+
+
+for i in range(len(arr)):
+    diff=target-arr[i]
+    
+    if diff in seen:
+        res.append([arr[i],diff])
+        
+    seen.add(arr[i])
+    
+print(res)
+seen={}
+res=[]
+for i in range(len(arr)):
+    diff = target - arr[i]
+    if diff in seen:
+        res.append([seen[diff], i])
+    seen[arr[i]] = i  # store value -> index
+
+print(res)
+
+**************************************************************************
+
+def flatten(d, parent_key='', sep='_'):
+    items = {}
+
+    for k, v in d.items():
+        new_key = f"{parent_key}{sep}{k}" if parent_key else k
+
+        if isinstance(v, dict):
+            items.update(flatten(v, new_key, sep))
+
+        elif isinstance(v, list):
+            for i, item in enumerate(v):
+                list_key = f"{new_key}_{i}"
+                # if isinstance(item, dict):
+                #     items.update(flatten(item, list_key, sep))
+                # else:
+                items[list_key] = item
+
+        else:
+            items[new_key] = v
+
+    return items
+    
+data = { 'id': '123', 'name': 'Laptop', 'specs': { 'ram': '16GB', 'cpu': 'i7', 'storage': { 'type': 'SSD', 'size': '1TB' } }, 'tags': ['fast', 'portable', 'light'] }
+
+print(flatten(data))
+***********************************************************
+
+
+
+
+How do you make optimize APis
+how do u optimize at API Layer
+
+If a APi for the browser and app how do you handle and what will there be any change ?
+
+merge dict questions in Sanjay chatgpt
+
+Idempotency in APIs
+
+
+
+
+
+SQL including joins,rank,dense rank, row number chatgpt
+how are Django and Fastapi are different
+Django and drf revision chatgpt
+Fastapi basics
+
+
+
+
+
+
+
+
+
+
