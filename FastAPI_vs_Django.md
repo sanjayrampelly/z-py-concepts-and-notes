@@ -1,5 +1,6 @@
 # FastAPI vs Django - Complete Comparison Guide
 
+
 ## FastAPI Overview
 
 **FastAPI** is a modern, high-performance web framework for building APIs with Python 3.7+ based on standard Python type hints. It was created by Sebastián Ramírez in 2018.
