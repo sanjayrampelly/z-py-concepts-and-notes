@@ -1,7 +1,6 @@
 # Attended Interview Questions
 
 ## 1. Tuple Mutability
-
 ```python
 t = ("apple", "orange", "banana")
 
